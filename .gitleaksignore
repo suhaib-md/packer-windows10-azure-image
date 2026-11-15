@@ -1,0 +1,3 @@
+# The original password was scrubbed from history and replaced with the literal
+# placeholder "REDACTED"; this rule flags the placeholder itself.
+4ac7bacd1bdadd72d77201dc89c916d8cc1d0616:windows.pkr.hcl:hashicorp-tf-password:63
