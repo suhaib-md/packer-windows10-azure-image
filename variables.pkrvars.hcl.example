@@ -1,0 +1,14 @@
+# Copy to variables.pkrvars.hcl (gitignored) and fill in, then:
+#   packer build -var-file=variables.pkrvars.hcl .
+# Or skip the file and export PKR_VAR_client_id, PKR_VAR_client_secret, ... instead.
+
+client_id       = "<service-principal-app-id>"
+client_secret   = "<service-principal-secret>"
+tenant_id       = "<tenant-id>"
+subscription_id = "<subscription-id>"
+
+# Temporary build-time admin password (Windows complexity rules apply)
+winrm_password = "<strong-password>"
+
+resource_group = "<existing-resource-group-for-the-image>"
+location       = "eastus"

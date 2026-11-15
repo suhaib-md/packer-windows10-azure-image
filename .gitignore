@@ -1,1 +1,10 @@
 vars.json
+
+# Variable files hold credentials - commit only the .example
+*.pkrvars.hcl
+*.auto.pkrvars.hcl
+
+# Packer cache and logs
+packer_cache/
+crash.log
+packer.log
