@@ -8,24 +8,36 @@ packer {
   }
 }
 
+# Azure service principal credentials. No defaults: pass them with -var-file,
+# -var, or PKR_VAR_<name> environment variables (e.g. PKR_VAR_client_secret).
 variable "client_id" {
-  type      = string
-  sensitive = true
+  type        = string
+  description = "Service principal application (client) ID"
+  sensitive   = true
 }
 
 variable "client_secret" {
-  type      = string
-  sensitive = true
+  type        = string
+  description = "Service principal client secret"
+  sensitive   = true
 }
 
 variable "tenant_id" {
-  type      = string
-  sensitive = true
+  type        = string
+  description = "Azure AD tenant ID"
+  sensitive   = true
 }
 
 variable "subscription_id" {
-  type      = string
-  sensitive = true
+  type        = string
+  description = "Azure subscription ID"
+  sensitive   = true
+}
+
+variable "winrm_password" {
+  type        = string
+  description = "Password for the temporary 'packer' admin user used over WinRM during the build"
+  sensitive   = true
 }
 
 variable "resource_group" {
@@ -60,7 +72,7 @@ source "azure-arm" "windows-10" {
   winrm_insecure                    = true
   winrm_timeout                     = "30m"
   winrm_username                    = "packer"
-  winrm_password                    = "REDACTED"
+  winrm_password                    = var.winrm_password
 }
 
 build {
@@ -77,7 +89,7 @@ build {
       "winrm set winrm/config/service '@{AllowUnencrypted=\"true\"}'",
       "winrm set winrm/config/service/auth '@{Basic=\"true\"}'",
       "netsh advfirewall firewall add rule name=\"WinRM 5985\" protocol=TCP dir=in localport=5985 action=allow",
-      "net user packer REDACTED /add /y",
+      "net user packer ${var.winrm_password} /add /y",
       "net localgroup administrators packer /add",
       "Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force",
       "Install-Module -Name PSWindowsUpdate -Force"
